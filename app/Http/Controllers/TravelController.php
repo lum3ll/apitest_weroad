@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Validator;
+use Log;
 use App\Models\Travel;
 
 class TravelController extends Controller
@@ -44,14 +46,21 @@ class TravelController extends Controller
         }
 
         // Validate the request data
-        $validatedData = $request->validate([
-            'isPublic' => 'required|boolean',
-            'slug'=> 'required|string|unique:api_travels',
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'numberOfDays' => 'required|integer',
-            'moods' => 'required|array',
+        $validator = Validator::make($request->all(), [
+            'isPublic'      => 'required|boolean',
+            'slug'          => 'required|string|unique:api_travels',
+            'name'          => 'required|string|max:255',
+            'description'   => 'required|string',
+            'numberOfDays'  => 'required|integer',
+            'moods'         => 'required|array',
         ]);
+        
+        if ($validator->fails()) {
+            Log::error('Validation failed', $validator->errors()->toArray());
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        
+        $validatedData = $validator->validated();
 
         // Create and save the new travel
         $travel = Travel::create($validatedData);
