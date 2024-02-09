@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Tour extends Model
 {
@@ -26,6 +27,17 @@ class Tour extends Model
         'startingDate' => 'datetime',
         'endingDate' => 'datetime'
     ];
+
+    protected static function boot() 
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) { 
+                $model->id = Str::uuid();
+            }
+        });
+    }
 
     public function getPriceAttribute($value)
     {

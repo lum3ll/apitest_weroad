@@ -143,6 +143,7 @@ class TourController extends Controller
 
         // Validate the request data
         $validated = $request->validate([
+            'travelId' => 'required|exists:api_travels,id',
             'name' => 'required|string|unique:api_tours',
             'startingDate' => 'required|date_format:Y-m-d',
             'endingDate' => 'required|date_format:Y-m-d|after_or_equal:startingDate',

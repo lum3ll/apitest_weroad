@@ -35,6 +35,9 @@ class Travel extends Model
         parent::boot();
 
         static::creating(function ($travel) {
+            if (empty($travel->id)) { 
+                $travel->id = Str::uuid();
+            }
             $travel->numberOfNights = $travel->numberOfDays - 1;
         });
     }
