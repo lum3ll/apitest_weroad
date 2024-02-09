@@ -1,71 +1,68 @@
-## API TEST WEROAD
 
-This is a Laravel API application for testing purpose. 
-Laravel version: 10.10
+## API Test WeRoad
 
-# MODELS
+This Laravel API application is designed for testing purposes, built with Laravel 10.10. It includes a basic setup with authentication, role management, and RESTful endpoints for managing travels and tours.
+## Models
 
-For the requested test, I've created 4 model to create the base structure of the entire API application. The 4 base models are User, Role, Travel and Tour. For each of these models I've generated the specific migrations to structure the DB.
+The application is structured around four primary models: User, Role, Travel, and Tour, with corresponding migrations to define the database structure.
 
-Here is the base structure of the 4 models:
+Base Structure
+    
+    User:
+        id
+        email
+        password
+        roleId
 
-User:
-    'id',
-    'email',
-    'password',
-    'roleId'
+    Role:
+        id
+        name
 
-Role:
-    'id',
-    'name'
+    Tour:
+        id
+        travelId
+        name
+        startingDate
+        endingDate
+        price
 
-Tour:
-    'id',
-    'travelId',
-    'name',
-    'startingDate',
-    'endingDate',
-    'price'
+    Travel:
+        id
+        slug
+        name
+        description
+        numberOfDays
+        moods (Uses JSON casting)
+## Authentication
 
-Travel (*):
-    'id',
-    'slug',
-    'name',
-    'description',
-    'numberOfDays',
-    'moods'
+Authentication is powered by Laravel Sanctum, with a custom implementation for role management (admin and editor). A dedicated middleware has been created to manage route permissions based on roles.
+## Run locally
 
-(*): For this specific model, the attribute "moods" assumes that JSON casting will be used.
+To run this project locally, you can use the docker-compose.yml (for a local container configuration). Once created main container, you can launch the services with the command.
 
-# AUTH
+```bash
+  ./vendor/bin/sail up -d
+```
 
-For the Authentication, I've used the base Sanctum package, creating a specific handling of Roles (admin and editor) to handle the different routes permission. I've created a specific middleware to handle the roles.
+When all service are up, you can proceed with migration and seeding.
+## Migrations and Seeding
 
-# MIGRATIONS AND SEEDS
-To create the base db structure and populate this with dummy data for the models, run the following command: 
+To set up the database and populate it with sample data, execute the following command:
 
-php artisan migrate --seed
+```bash
+  php artisan migrate --seed
+```
 
-# SWAGGER AND API DOCUMENTATION
-For API reference and documentation, I've used zircote/swagger-php package, and for the generation of Swagger documentation, i've used darkaonline/l5-swqagger package (configuration available at config/l5-swagger.php). To generate or update the swagger, run:
+## Documentation
 
-php artisan l5-swagger:generate
+API documentation is generated using the zircote/swagger-php package, with darkaonline/l5-swagger for Swagger UI integration. To generate or update the Swagger documentation run:
 
-Documentation will be available in your local environment at the address:
+```bash
+  php artisan l5-swagger:generate
+```
 
-http://localhost/api/documentation
+To access to the documentation locally, visit:
 
-# DOCKER SETUP
-
-In the root folder you'll find also the docker-compose.yml (for a local container configuration)
-
-
-
-
-
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# apitest_weroad
-# apitest_weroad
+```bash
+  http://localhost/api/documentation
+```
