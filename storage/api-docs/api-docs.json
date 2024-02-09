@@ -229,6 +229,75 @@
                     }
                 ]
             }
+        },
+        "/api/travels": {
+            "post": {
+                "tags": [
+                    "Travels"
+                ],
+                "summary": "Create a new travel",
+                "operationId": "9e3b1f79161c80eb0922acd543842cd8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "isPublic",
+                                    "slug",
+                                    "name",
+                                    "description",
+                                    "numberOfDays",
+                                    "moods"
+                                ],
+                                "properties": {
+                                    "isPublic": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "slug": {
+                                        "type": "string",
+                                        "example": "amazing-trip"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Amazing Trip"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Description of the amazing trip"
+                                    },
+                                    "numberOfDays": {
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "moods": {
+                                        "type": "object",
+                                        "example": {
+                                            "adventure": 80,
+                                            "relaxation": 20
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfully created new travel"
+                    },
+                    "403": {
+                        "description": "Forbidden - User not authorized to create travel"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     }
 }
