@@ -1,0 +1,234 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "WeRoad Test API",
+        "contact": {
+            "email": "luca.mellanocalifano@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "API login endpoint",
+                "operationId": "42194b57dfc72ef96df8529fd49cfe57",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|xxxxxxxxxx"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Log out the current user",
+                "operationId": "919ad57befb6f354ab9a250269540d3a",
+                "responses": {
+                    "200": {
+                        "description": "Successful logout"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/tours/{slug}": {
+            "get": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "Retrieve a list of tours",
+                "operationId": "bc66d4a17edf24d0209aab7ff2118052",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "The slug of the travel",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "dateFrom",
+                        "in": "query",
+                        "description": "optional starting date filter",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "dateTo",
+                        "in": "query",
+                        "description": "optional ending date filter",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "priceFrom",
+                        "in": "query",
+                        "description": "optional starting price filter",
+                        "schema": {
+                            "type": "string",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "priceTo",
+                        "in": "query",
+                        "description": "optional ending price filter",
+                        "schema": {
+                            "type": "string",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Define the sort order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieve the tours list"
+                    },
+                    "421": {
+                        "description": "Error retrievie the tours list"
+                    }
+                }
+            }
+        },
+        "/api/travels/{slug}/tours": {
+            "post": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "Create a new tour for a given travel",
+                "operationId": "e37ae67931a95504a892bccc0ae5fae1",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "The slug of the travel to which the tour belongs",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "startingDate",
+                                    "endingDate",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Unique name of the tour",
+                                        "type": "string"
+                                    },
+                                    "startingDate": {
+                                        "description": "Starting date of the tour",
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "endingDate": {
+                                        "description": "Ending date of the tour",
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "price": {
+                                        "description": "Price of the tour in cents",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tour successfully created"
+                    },
+                    "403": {
+                        "description": "Forbidden - User not authorized to create tours"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity - Validation failed for the tour data"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    }
+}
