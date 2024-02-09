@@ -230,13 +230,13 @@
                 ]
             }
         },
-        "/api/travels": {
+        "/api/addTravel": {
             "post": {
                 "tags": [
                     "Travels"
                 ],
                 "summary": "Create a new travel",
-                "operationId": "9e3b1f79161c80eb0922acd543842cd8",
+                "operationId": "b6b7637f759790d0616e72f43b322815",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -290,6 +290,124 @@
                     },
                     "403": {
                         "description": "Forbidden - User not authorized to create travel"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/travels/{id}": {
+            "patch": {
+                "tags": [
+                    "Travels"
+                ],
+                "summary": "Update an existing travel",
+                "operationId": "70eb20416a7e42d63bd88cccf77a59b1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID of the travel to update",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "isPublic": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "slug": {
+                                        "type": "string",
+                                        "example": "updated-amazing-trip"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Updated Amazing Trip"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Updated description of the amazing trip"
+                                    },
+                                    "numberOfDays": {
+                                        "type": "integer",
+                                        "example": 12
+                                    },
+                                    "moods": {
+                                        "type": "object",
+                                        "example": {
+                                            "adventure": 90,
+                                            "relaxation": 10
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated the travel",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                        },
+                                        "isPublic": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "slug": {
+                                            "type": "string",
+                                            "example": "updated-amazing-trip"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Updated Amazing Trip"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Updated description of the amazing trip"
+                                        },
+                                        "numberOfDays": {
+                                            "type": "integer",
+                                            "example": 12
+                                        },
+                                        "moods": {
+                                            "type": "object",
+                                            "example": {
+                                                "adventure": 90,
+                                                "relaxation": 10
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - User not authorized to update travel"
+                    },
+                    "404": {
+                        "description": "Not Found - The travel could not be found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity - Validation error on one or more fields"
                     }
                 },
                 "security": [

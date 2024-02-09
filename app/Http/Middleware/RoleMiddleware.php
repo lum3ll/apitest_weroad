@@ -16,9 +16,9 @@ class RoleMiddleware
      * @param  string  $role  The role to check for
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        if (!Auth::check() || !$request->user()->hasRole($role)) {
+        if (!Auth::check() || !$request->user()->hasAnyRole($roles)) {
             return response()->json(['message' => 'This action is unauthorized.'], 403);
         }
 
