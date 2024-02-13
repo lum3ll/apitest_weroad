@@ -7,9 +7,18 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use Log;
 use App\Models\Travel;
+use App\Services\TravelService;
 
 class TravelController extends Controller
 {
+
+    private $travelService;
+
+    public function __construct(TravelService $travelService)
+    {
+        $this->travelService = $travelService;
+    }
+
     /**
      * @OA\Post(
      *     path="/api/addTravel",
@@ -63,7 +72,7 @@ class TravelController extends Controller
         $validatedData = $validator->validated();
 
         // Create and save the new travel
-        $travel = Travel::create($validatedData);
+        $travel = $this->travelService->createTravel($validatedData);
 
         return response()->json($travel, 201);
     }
@@ -137,8 +146,8 @@ class TravelController extends Controller
             'moods'         => 'sometimes|array',
         ]);
 
-        $travel->update($validatedData);
+        $updatedTravel = $this->travelService->updateTravel($travel, $validatedData);
 
-        return response()->json($travel, 200);
+        return response()->json($updatedTravel, 200);
     }
 }
