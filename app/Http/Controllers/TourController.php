@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Tour;
 use Illuminate\Http\Request;
+use App\Services\TourService;
 
 class TourController extends Controller
 {
+    protected $tourService;
+
+    public function __construct(TourService $tourService)
+    {
+        $this->tourService = $tourService;
+    }
 
     /**
      * @OA\Get(
@@ -152,14 +159,14 @@ class TourController extends Controller
 
         // Find the travel by slug
         $travel = \App\Models\Travel::where('slug', $slug)->first();
+        
         if (!$travel) {
             return response()->json(['message' => 'Travel not found'], 422);
         }
 
         // Create a new tour linked to the travel
-        $tour = new Tour($validated);
-        $tour->travelId = $travel->id;
-        $tour->save();
+        $validated['travel_id'] = $travel->id;
+        $tour = $this->tourService->createTour($validated);
 
         return response()->json($tour, 200);
     }
